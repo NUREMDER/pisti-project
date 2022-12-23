@@ -1,0 +1,34 @@
+public class mypisti {
+    public static void main(String[] args) {
+
+        String[] deck=new String[52];//destemizdeki kartlar
+        String[] aDeck=new String[4];//oyuncumuzun elindeki deste
+        String[] aTaken=new String[52];//oyuncumuzun aldıkları
+        int[] aPisti=new int[1];//oyuncumuzun pişti sayılarını tutar.
+        String[] bDeck=new String[4];//bilgisayarın elindeki deste
+        String[] bTaken=new String[52];//bilgisayarın aldıkları
+        int[] bPisti=new int[1];//bilgisayarın pişti sayılarını tutar.
+        String[][] yerDeck=new String[52][2];//yerdeki destemiz
+
+        gameplay.deckcutmove(deck,aDeck,bDeck,yerDeck);
+
+
+        while (!deck[51].equals("")) gameplay.game(deck,
+                yerDeck,
+                aDeck,
+                bDeck,
+                false,
+                aTaken,
+                aPisti,
+                bTaken,
+                bPisti);
+
+        gameplay.game(deck, yerDeck, aDeck, bDeck,true,aTaken,aPisti,bTaken,bPisti);
+
+        output.deckPrint(yerDeck);
+        System.out.println("bPisti"+bPisti[0]+"  aPisti :"+aPisti[0]);
+        scorecalculator.pointCalculate(aTaken, aPisti, bTaken, bPisti);
+
+    }
+
+}
