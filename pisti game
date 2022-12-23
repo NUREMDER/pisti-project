@@ -1,1 +1,82 @@
+import java.util.Random;
+
+public class createandshuffle {
+    public static void CreateCARD(String[] CARD)
+    {
+        CARD[0]= "♦A";
+        CARD[1]= "♦2";
+        CARD[2]= "♦3";
+        CARD[3]= "♦4";
+        CARD[4]= "♦5";
+        CARD[5]= "♦6";
+        CARD[6]= "♦7";
+        CARD[7]= "♦8";
+        CARD[8]= "♦9";
+        CARD[9]= "♦10";
+        CARD[10]="♦Joker";
+        CARD[11]="♦Q";
+        CARD[12]="♦K";
+
+        CARD[13]="♥A";
+        CARD[14]="♥2";
+        CARD[15]="♥3";
+        CARD[16]="♥4";
+        CARD[17]="♥5";
+        CARD[18]="♥6";
+        CARD[19]="♥7";
+        CARD[20]="♥8";
+        CARD[21]="♥9";
+        CARD[22]="♥10";
+        CARD[23]="♥Joker";
+        CARD[24]="♥Q";
+        CARD[25]="♥K";
+
+        CARD[26]="♠A";
+        CARD[27]="♠2";
+        CARD[28]="♠3";
+        CARD[29]="♠4";
+        CARD[30]="♠5";
+        CARD[31]="♠6";
+        CARD[32]="♠7";
+        CARD[33]="♠8";
+        CARD[34]="♠9";
+        CARD[35]="♠10";
+        CARD[36]="♠Joker";
+        CARD[37]="♠Q";
+        CARD[38]="♠K";
+
+        CARD[39]="♣A";
+        CARD[40]="♣2";
+        CARD[41]="♣3";
+        CARD[42]="♣4";
+        CARD[43]="♣5";
+        CARD[44]="♣6";
+        CARD[45]="♣7";
+        CARD[46]="♣8";
+        CARD[47]="♣9";
+        CARD[48]="♣10";
+        CARD[49]="♣Joker";
+        CARD[50]="♣Q";
+        CARD[51]="♣K";
+
+        //String array ile sonraki işlemlerde kullanmak için kartları oluşturdum. Tanımlama yaptım.
+        /*Piştinin oynanışını output'ta türkçe hazırlayacağım çünkü bizim tarafımızdan oynanan bir oyun 19.yüzyılda
+        Osmanlı zamanında ortaya çıkmış.
+        */
+
+
+    }
+    public static void Deckshuffle(String[] deck)
+    {
+        CreateCARD(deck);
+        Random rnd = new Random();
+        for (int i = 0; i < deck.length; i++)
+
+        {int Shuffle = rnd.nextInt(52);
+            String substitute = deck[i];
+            deck[i]=deck[Shuffle];
+            deck[Shuffle]=substitute;}
+        //Rastgele karıştırma kısmı.
+    }
+}
 
