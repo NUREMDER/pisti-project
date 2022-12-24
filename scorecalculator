@@ -1,0 +1,58 @@
+public class scorecalculator {
+    public static void pointCalculate(String[] aTaken, int[] aPisti, String[] bTaken, int[] bPisti)
+    {
+        int bPoint=0;
+        int aPoint=0;
+        int bTakenIndex =0;
+        for (int i = 0; i < bTaken.length; i++) {
+            if (bTaken[i]!=null) {
+                if (bTaken[i].substring(bTaken[i].length()-2,bTaken[i].length()).equals("er")) {
+                    bPoint++;//jokerleri sayar puan ekler
+                }
+                if (bTaken[i].substring(bTaken[i].length()-2,bTaken[i].length()).equals("A")) {
+                    bPoint++;//as ları sayar puan ekler.
+                }
+                if (bTaken[i].equals("♣2")) {
+                    bPoint=bPoint+2;
+                }
+                if (bTaken[i].equals("♦10")) {
+                    bPoint=bPoint+3;
+                }//Bu iki kartın puan durumu oyuna göre 2 ve 3 olduğundan değerlerini değiştirdiğim kısım
+                bTakenIndex++;
+            }
+            else break;
+        }
+        int aTakenIndex =0;
+        for (int i = 0; i < aTaken.length; i++) {
+            if (aTaken[i]!=null) {
+                if (aTaken[i].substring(aTaken[i].length()-2,aTaken[i].length()).equals("er")) {
+                    bPoint++;//jokerleri sayar puan ekler
+                }
+                if (aTaken[i].substring(aTaken[i].length()-2,aTaken[i].length()).equals("A")) {
+                    aPoint++;//as'ları sayar puan ekler.
+                }
+                if (aTaken[i].equals("♣2")) {
+                    aPoint=bPoint+2;
+                }
+                if (aTaken[i].equals("♦10")) {
+                    aPoint=bPoint+3;
+                }//Diğer oyuncu için de aynı hesaplar
+                aTakenIndex++;
+            }
+            else break;
+        }
+        //kağıt çoğunluğuna göre +3 puan verilmeli.
+        if (aTakenIndex>bTakenIndex) {
+            aPoint=aPoint+3;
+        }
+        if (aTakenIndex<bTakenIndex) {
+            bPoint=bPoint+3;
+        }
+        bPoint=bPoint+bPisti[0]*10;
+        aPoint=aPoint+aPisti[0]*10;
+        System.out.println("Bilgisayar Puanı :"+bPoint);
+        System.out.println("Kullanıcı Puanı :"+aPoint);
+
+
+    }
+}
