@@ -1,0 +1,231 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class gameplay {
+    public static void deckfirstmove(String[] deck, String[] aDeck, String[] bDeck, String[][] yerDeck){
+        int index=0;
+        for (int i = 0; i < deck.length; i++) {
+            if (deck[i].equals("")) {
+                index=i;
+            }
+        }
+        index++;
+        // destenin bitme durumunun kontrolü
+
+        //oyuncunun destesi ilk dagıtım.
+        aDeck[0]=deck[index];
+        aDeck[1]=deck[index+1];
+        aDeck[2]=deck[index+2];
+        aDeck[3]=deck[index+3];
+
+        //bilgisayarın destesi ilk dağıtım
+        bDeck[0]=deck[index+4];
+        bDeck[1]=deck[index+5];
+        bDeck[2]=deck[index+6];
+        bDeck[3]=deck[index+7];//Zaten karışık olduğundan ilk 8 kartı dağıttım.
+
+        //Kesilip birisi açılan ilk dört kart için. Çokta kullanılmayan bir yöntem ama ben bunu biliyorum şimdilik.
+        yerDeck[0][0]=deck[index+8];
+        yerDeck[0][1]="Kapalı";
+        yerDeck[1][0]=deck[index+9];
+        yerDeck[1][1]="Kapalı";
+        yerDeck[2][0]=deck[index+10];
+        yerDeck[2][1]="Kapalı";
+        yerDeck[3][0]=deck[index+11];
+        yerDeck[3][1]="Açık";
+
+        for (int i = 0; i < 12; i++) {//destemizden aldığımız kartları kaldırıyoruz.
+            deck[i]="";
+        }
+
+    }
+    public static void deckcutmove(String[] deck, String[] aDeck, String[] bDeck, String[][] yerDeck)
+    {
+
+
+        createandshuffle.Deckshuffle(deck);//deste karıştırmayı uygulamaya geçirdim.
+
+        //Desteden Rasgele Kesilecek.
+        Random rnd = new Random();
+        int kes = 16+rnd.nextInt(18);
+        String[] deste1 = new String[52];
+        String[] deste2 = new String[52];
+        int d2counter=0;
+        for (int i = 0; i < deck.length; i++) {
+            if (i<kes) {
+                deste1[i]=deck[i];
+            }
+            else{
+                deste2[d2counter]=deck[i];
+                d2counter++;
+            }
+        }
+        int counter =0;
+        for(String item :deste2)
+        {
+            if (item==null) {
+                break;}
+
+            deck[counter]=item;
+            counter++;
+        }
+        for(String item :deste1) {
+            if (item==null) {
+                break;}
+
+            deck[counter]=item;
+            counter++;
+        }
+        //kesme işlemi bitti çok şükür ösfsnvsksd.
+
+        //Dağıtma olacak deste bir ve deste iki ve sonra açma aşamaları olacak.
+
+        deckfirstmove(deck, aDeck, bDeck, yerDeck);
+
+    }
+
+    public static void nullAtlatici(String[] deck)
+    {
+        for (int i = 0; i < deck.length-1; i++) {
+            if (deck[i]==null) {
+                deck[i]=deck[i+1];
+                deck[i+1]=null;
+            }
+        }
+    }
+    public static void kartAt(String[][]yerDeck,String[] aDeck,int index)
+    {   int lastIndex=0;
+        if (yerDeck[0][0]!=null) {
+            for (int i = 0; i < yerDeck.length; i++) {//Yerdeki boş alanın indexini buluyoruz.
+                if(yerDeck[i][0]==null)
+                {
+                    lastIndex=i;
+                    break;
+                }
+            }}
+        yerDeck[lastIndex][0]=aDeck[index];
+        yerDeck[lastIndex][1]="Açık";
+        aDeck[index]=null;
+        nullAtlatici(aDeck);
+
+    }
+    public static void cKartAt(String[][]yerDeck,String[] bDeck,String[] bTaken,int[] bPisti)
+    {
+        int random=0;
+        Random rnd = new Random();
+
+        do {
+            random = rnd.nextInt(4);
+            if (bDeck[0]==null&&bDeck[1]==null&&bDeck[2]==null&&bDeck[3]==null) {
+                break;
+            }
+        } while (bDeck[random]==null);
+        kartAt(yerDeck, bDeck, random);
+        control(yerDeck, bTaken, bPisti);
+    }
+    public static void aKartAt(String[][]yerDeck, String[] aDeck, int index, String[] aTaken, int[] aPisti)
+    {
+        kartAt(yerDeck, aDeck, index);
+        control(yerDeck, aTaken, aPisti);
+
+    }
+    public static void birikenler0(String[][] yerDeck, String[] biriken)
+    {
+        int birikenIndex =0;
+        for (int i = 0; i < biriken.length; i++) {
+            if (biriken[i]!=null) {
+                birikenIndex++;
+            }
+            else break;
+        }
+        for (int i = 0; i < yerDeck.length; i++) {
+            if (yerDeck[i][0]!=null) {
+                biriken[birikenIndex+i]=yerDeck[i][0];
+            }
+
+        }
+        for (int i = 0; i < yerDeck.length; i++) {
+            yerDeck[i][0]=null;
+            yerDeck[i][1]="Açık";
+
+        }
+    }
+    public static void control(String[][]yerDeck, String[] biriken, int[] pisti)
+    {
+        int index=51;
+
+        for (int i = 51; i >= 0; i--) {
+            if (yerDeck[i][0]==null) {
+                index =i;
+            }
+            else break;
+        } //yerdeki elemanların sonunu aldım.
+        index--;
+        if(yerDeck[index][0]!=null)
+        {
+            if (index==0) {
+                //yer boş
+            }
+            else{
+                if (yerDeck[index][0].startsWith("Joker", yerDeck[index][0].length()-5))
+                {
+                    birikenler0(yerDeck, biriken);// joker
+
+
+                }
+                else if (index==1&&yerDeck[index][0].substring(yerDeck[index][0].length()-2).equals(yerDeck[index-1][0].substring(yerDeck[index-1][0].length()-2))) {
+                    //pişti
+                    pisti[0]++;
+                    birikenler0(yerDeck, biriken);
+
+                }
+                else if (yerDeck[index][0].substring(yerDeck[index][0].length()-2).equals(yerDeck[index-1][0].substring(yerDeck[index-1][0].length()-2))) {
+                    birikenler0(yerDeck, biriken);
+                }
+
+            }
+
+        }}
+    public static void kartDagit(String[] deck,String[] bDeck,String[] aDeck)
+    {int index =0;
+        while(deck[index].equals(""))
+            index++;
+
+
+        aDeck[0]=deck[index];
+        aDeck[1]=deck[index+1];
+        aDeck[2]=deck[index+2];
+        aDeck[3]=deck[index+3];//oynadığımız desteyi ilk dağıtma kısmı
+
+
+        bDeck[0]=deck[index+4];
+        bDeck[1]=deck[index+5];
+        bDeck[2]=deck[index+6];
+        bDeck[3]=deck[index+7];//bilgisayarın destesini ilk dağıtma kısmı
+
+        for (int i = 0; i < 8; i++) {
+            deck[index+i]="";
+        }
+    }
+    public static void game(String[] deck,String[][] yerDeck,String[] aDeck,String[] bDeck,boolean son,String[] aTaken,int[] aPisti,String[] bTaken,int[] bPisti)
+    {
+        Scanner scn=new Scanner(System.in);
+        for (int i = 0; i < 4; i++) {
+            if(!son)
+                output.decklastPrint(deck);//Burada da yazdırma var işte output koyarak farklı classlardan birleştiriyoruz zaten.
+
+            output.deckPrint(yerDeck);//yerdeki desteleri yazıyoruz.
+            output.xPrint(aDeck);
+            System.out.print("Atmak istediğiniz kart :");
+            aKartAt(yerDeck, aDeck, scn.nextInt(),aTaken,aPisti);
+            cKartAt(yerDeck, bDeck,bTaken,bPisti);
+            //Kullanıcının output'a sayı girmesini sağladığım kısım.
+        }
+        if(!son)
+            kartDagit(deck, bDeck, aDeck);
+
+    }
+}
+
+
+//E♥∞
